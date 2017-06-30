@@ -8,6 +8,8 @@ function Game() {
   ];
 
   this.isFull = false;
+  this.generateGrid(3, 3);
+
 }
 
 // Prototypes to inputs to the game
@@ -23,8 +25,8 @@ Game.prototype.generateGrid = function(numberRow, numberColumn){
         console.log("This is a cell");
       }
     }
+      this.clickCell();
 };
-
 
 Game.prototype.clickCell = function(){
   console.log("This is a click");
@@ -42,12 +44,16 @@ Game.prototype.clickCell = function(){
     // HTML
 
     if (turn === 1){
-      value = "X";
-      $(this).text("X")
+      value = "d";
+      $(this).text("d")
       turn = 2;
     } else if (turn === 2){
-      $(this).text("O");
-      value = "O";
+      $(this).text("i");
+      value = "i";
+      turn = 3;
+    } else if (turn === 3){
+      $(this).text("v");
+      value = "v";
       turn = 1;
     }
 
@@ -68,51 +74,14 @@ Game.prototype.clickCell = function(){
 
 Game.prototype.detectFullBoard = function(){
   this.isFull = true;
-  for(var i = 0; i < this.board.length; i++){
-    for (var j = 0; j< this.board[i].length; j++) {
+  for(var i = 0; i <= this.board.length; i++){
+    for (var j = 0; j<= this.board[i].length; j++) {
       if(this.board[i][j] === null){
         this.isFull = false
       }
     }
   }
 }
-
-  //
-Game.prototype.extractRandomTiles= function(){
-  // Generate Random Value
-  //var isFull = true;
-  if (this.isFull === true){
-    console.log("The board is full now");
-
-    // Math radom multiplicado por tres por las tres casillas
-    var randomTilePositionX = [];
-    var randomTilePositionO = [];
-
-    while (randomTilePositionX.length < 2 || randomTilePositionO.length < 2) {
-      var row = Math.floor(Math.random() * 3);
-      var col = Math.floor(Math.random() * 3);
-
-      if(this.board[row][col] === "X" && randomTilePositionX.length < 2){
-        randomTilePositionX.push([row,col])
-      }
-
-      if(this.board[row][col] === "O" && randomTilePositionO.length < 2){
-        randomTilePositionO.push([row,col])
-      }
-    }
-  }
-
-//recorrer arrays "randomTilePOsitionX" + coordenadas guardadas e ir a la posición del board para ponerla "null" + acceder al jquery y quitar el .text
-console.log(randomTilePositionX);
-console.log(randomTilePositionO);
-
-
-}
-
-
-
-
-
 
 
 // PARTE DE LA APLICACIÓN, VA POR SEPARADO
@@ -121,9 +90,11 @@ console.log(randomTilePositionO);
 var game;
 
 $(document).ready(function() {
+  $("#intro").addClass("fadeOut");
 
-  game = new Game();
-  game.generateGrid(3, 3);
-  game.clickCell();
+  setTimeout(function(){
+    $("#intro").remove();
+    $("#game").show()
+    game = new Game();
+  }, 1500)
 });
-
